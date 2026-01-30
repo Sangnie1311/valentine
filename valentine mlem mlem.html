@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Valentine's Day 💝</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Patrick Hand', cursive;
+            background: linear-gradient(135deg, #fef4f8 0%, #fce8f0 50%, #fef4f8 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Floating hearts background */
+        body::before {
+            content: '♥';
+            position: absolute;
+            font-size: 20px;
+            color: rgba(255, 182, 193, 0.3);
+            animation: float 15s infinite ease-in-out;
+            top: 10%;
+            left: 15%;
+        }
+
+        body::after {
+            content: '♥';
+            position: absolute;
+            font-size: 16px;
+            color: rgba(255, 182, 193, 0.25);
+            animation: float 20s infinite ease-in-out 5s;
+            top: 70%;
+            right: 20%;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            aspect-ratio: 16/10;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Monitor Frame - Hand-drawn style */
+        .monitor {
+            width: 100%;
+            height: 100%;
+            background: #f8f8f8;
+            border: 4px solid #2a2a2a;
+            border-radius: 12px;
+            box-shadow: 
+                8px 8px 0px rgba(0,0,0,0.1),
+                4px 4px 20px rgba(0,0,0,0.2);
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            filter: url(#sketchy);
+        }
+
+        .monitor:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                10px 10px 0px rgba(0,0,0,0.1),
+                6px 6px 25px rgba(0,0,0,0.25);
+        }
+
+        .monitor.clicked {
+            cursor: default;
+        }
+
+        /* Menu Bar */
+        .menu-bar {
+            background: linear-gradient(180deg, #dfe6f0 0%, #c5d4e8 100%);
+            height: 32px;
+            border-bottom: 2px solid #a8b8d0;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            font-size: 13px;
+            color: #2a2a2a;
+            filter: url(#sketchy);
+        }
+
+        .menu-bar span {
+            margin-right: 20px;
+            font-weight: 600;
+        }
+
+        .menu-bar .date {
+            margin-left: auto;
+            font-size: 11px;
+        }
+
+        /* Desktop */
+        .desktop {
+            height: calc(100% - 32px);
+            background: linear-gradient(135deg, #a8c8e8 0%, #d0e4f5 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .desktop-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 120px;
+            opacity: 0.1;
+            color: #fff;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .click-hint {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            color: #2a2a2a;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px 40px;
+            border: 3px solid #2a2a2a;
+            border-radius: 12px;
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+            filter: url(#sketchy);
+            animation: pulse 2s infinite;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.05); }
+        }
+
+        /* Folders Container */
+        .folders-container {
+            display: none;
+            padding: 60px 40px;
+            height: 100%;
+            align-items: center;
+            justify-content: center;
+            gap: 60px;
+            flex-wrap: wrap;
+        }
+
+        .folders-container.active {
+            display: flex;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Folder Icons */
+        .folder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .folder:hover {
+            transform: translateY(-8px) rotate(2deg);
+        }
+
+        .folder-icon {
+            width: 140px;
+            height: 100px;
+            position: relative;
+            margin-bottom: 12px;
+            filter: url(#sketchy);
+        }
+
+        /* Blue Folder - macOS style */
+        .folder.blue .folder-body {
+            background: linear-gradient(180deg, #7dc3f7 0%, #5aaae8 40%, #4a9de5 100%);
+        }
+
+        .folder.blue .folder-top {
+            background: linear-gradient(180deg, #9dd5ff 0%, #7dc3f7 100%);
+        }
+
+        .folder.blue .folder-shine {
+            background: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 60%);
+        }
+
+        /* Green Folder - macOS style */
+        .folder.green .folder-body {
+            background: linear-gradient(180deg, #85e8ad 0%, #63db94 40%, #52d085 100%);
+        }
+
+        .folder.green .folder-top {
+            background: linear-gradient(180deg, #a8f5c8 0%, #85e8ad 100%);
+        }
+
+        .folder.green .folder-shine {
+            background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 60%);
+        }
+
+        /* Yellow Folder - macOS style */
+        .folder.yellow .folder-body {
+            background: linear-gradient(180deg, #ffd966 0%, #ffcc33 40%, #f5c02e 100%);
+        }
+
+        .folder.yellow .folder-top {
+            background: linear-gradient(180deg, #ffe799 0%, #ffd966 100%);
+        }
+
+        .folder.yellow .folder-shine {
+            background: linear-gradient(180deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0) 60%);
+        }
+
+        /* Folder body - main container */
+        .folder-body {
+            width: 100%;
+            height: 80px;
+            border: 3px solid #2a2a2a;
+            border-radius: 0 12px 12px 12px;
+            position: relative;
+            box-shadow: 
+                0 4px 8px rgba(0,0,0,0.15),
+                inset 0 -12px 20px rgba(0,0,0,0.15);
+        }
+
+        /* Folder top tab - curved organic shape */
+        .folder-top {
+            width: 85px;
+            height: 32px;
+            border: 3px solid #2a2a2a;
+            border-bottom: none;
+            border-radius: 12px 12px 0 0;
+            position: absolute;
+            top: -32px;
+            left: 0;
+            box-shadow: inset 0 3px 8px rgba(255,255,255,0.4);
+        }
+
+        /* Curved connection between tab and body */
+        .folder-top::after {
+            content: '';
+            position: absolute;
+            right: -3px;
+            bottom: -3px;
+            width: 20px;
+            height: 20px;
+            background: inherit;
+            border-right: 3px solid #2a2a2a;
+            border-radius: 0 0 12px 0;
+        }
+
+        /* Shine effect on folder */
+        .folder-shine {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            border-radius: 0 12px 0 0;
+            pointer-events: none;
+        }
+
+        /* Bottom shadow line for depth */
+        .folder-body::after {
+            content: '';
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            right: 8px;
+            height: 3px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 2px;
+        }
+
+        .folder-label {
+            font-size: 18px;
+            color: #2a2a2a;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        /* Modal Windows */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-window {
+            background: #f8f8f8;
+            border: 3px solid #2a2a2a;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            box-shadow: 8px 8px 0px rgba(0,0,0,0.2);
+            filter: url(#sketchy);
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            background: linear-gradient(180deg, #dfe6f0 0%, #c5d4e8 100%);
+            padding: 12px 16px;
+            border-bottom: 2px solid #a8b8d0;
+            border-radius: 9px 9px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2a2a2a;
+        }
+
+        .modal-close {
+            width: 16px;
+            height: 16px;
+            background: #ff5f57;
+            border: 2px solid #2a2a2a;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .modal-close:hover {
+            transform: scale(1.2);
+            background: #ff3b30;
+        }
+
+        .modal-close::before,
+        .modal-close::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 2px;
+            background: #2a2a2a;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+
+        .modal-close::after {
+            transform: translate(-50%, -50%) rotate(-45deg);
+        }
+
+        .modal-content {
+            padding: 30px;
+            max-height: calc(80vh - 60px);
+            overflow-y: auto;
+        }
+
+        /* Letter Styling */
+        .letter-content {
+            font-family: 'Caveat', cursive;
+            font-size: 24px;
+            line-height: 1.8;
+            color: #2a2a2a;
+            text-align: left;
+        }
+
+        .letter-content p {
+            margin-bottom: 20px;
+        }
+
+        .signature {
+            text-align: right;
+            margin-top: 40px;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        /* Playlist Styling */
+        .playlist-content {
+            text-align: center;
+        }
+
+        .playlist-content p {
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: #2a2a2a;
+        }
+
+        .playlist-link {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #ff6b9d 0%, #c94b7a 100%);
+            color: white;
+            text-decoration: none;
+            border: 3px solid #2a2a2a;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            filter: url(#sketchy);
+        }
+
+        .playlist-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 6px 6px 0px rgba(0,0,0,0.2);
+        }
+
+        /* Photo Styling */
+        .photo-content {
+            text-align: center;
+        }
+
+        .photo-frame {
+            display: inline-block;
+            padding: 15px;
+            background: white;
+            border: 3px solid #2a2a2a;
+            box-shadow: 6px 6px 0px rgba(0,0,0,0.2);
+            transform: rotate(-2deg);
+            filter: url(#sketchy);
+            margin-top: 10px;
+        }
+
+        .photo-frame img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            max-height: 400px;
+            object-fit: cover;
+        }
+
+        /* SVG Filters for Sketchy Effect */
+        svg {
+            position: absolute;
+            width: 0;
+            height: 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                width: 98%;
+                aspect-ratio: 3/4;
+            }
+
+            .menu-bar {
+                height: 28px;
+                font-size: 11px;
+                padding: 0 8px;
+            }
+
+            .menu-bar span {
+                margin-right: 12px;
+            }
+
+            .click-hint {
+                font-size: 18px;
+                padding: 15px 25px;
+            }
+
+            .folders-container {
+                padding: 30px 20px;
+                gap: 40px;
+            }
+
+            .folder-icon {
+                width: 110px;
+                height: 80px;
+            }
+
+            .folder-body {
+                height: 64px;
+            }
+
+            .folder-top {
+                width: 68px;
+                height: 26px;
+                top: -26px;
+            }
+
+            .folder-label {
+                font-size: 16px;
+            }
+
+            .modal-window {
+                max-width: 95%;
+            }
+
+            .modal-content {
+                padding: 20px;
+            }
+
+            .letter-content {
+                font-size: 20px;
+            }
+
+            .desktop-bg {
+                font-size: 60px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .folders-container {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .letter-content {
+                font-size: 18px;
+            }
+
+            .playlist-link {
+                font-size: 16px;
+                padding: 12px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- SVG Filters for Hand-Drawn Effect -->
+    <svg xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <filter id="sketchy">
+                <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" result="noise"/>
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" xChannelSelector="R" yChannelSelector="G"/>
+            </filter>
+        </defs>
+    </svg>
+
+    <div class="container">
+        <div class="monitor" id="monitor">
+            <!-- Menu Bar -->
+            <div class="menu-bar">
+                <span>Finder</span>
+                <span>File</span>
+                <span>Edit</span>
+                <span>View</span>
+                <span>Go</span>
+                <span>Window</span>
+                <span class="date">Sat, 14 Feb</span>
+            </div>
+
+            <!-- Desktop -->
+            <div class="desktop">
+                <div class="desktop-bg">♥</div>
+                
+                <!-- Click Hint -->
+                <div class="click-hint" id="clickHint">
+                    Click to open ♥
+                </div>
+
+                <!-- Folders Container -->
+                <div class="folders-container" id="foldersContainer">
+                    <!-- Letter Folder -->
+                    <div class="folder blue" data-modal="letterModal">
+                        <div class="folder-icon">
+                            <div class="folder-top"></div>
+                            <div class="folder-body">
+                                <div class="folder-shine"></div>
+                            </div>
+                        </div>
+                        <div class="folder-label">letter</div>
+                    </div>
+
+                    <!-- Playlist Folder -->
+                    <div class="folder green" data-modal="playlistModal">
+                        <div class="folder-icon">
+                            <div class="folder-top"></div>
+                            <div class="folder-body">
+                                <div class="folder-shine"></div>
+                            </div>
+                        </div>
+                        <div class="folder-label">playlist</div>
+                    </div>
+
+                    <!-- Photo Folder -->
+                    <div class="folder yellow" data-modal="photoModal">
+                        <div class="folder-icon">
+                            <div class="folder-top"></div>
+                            <div class="folder-body">
+                                <div class="folder-shine"></div>
+                            </div>
+                        </div>
+                        <div class="folder-label">photo</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Letter Modal -->
+    <div class="modal" id="letterModal">
+        <div class="modal-window">
+            <div class="modal-header">
+                <div class="modal-title">letter ♥</div>
+                <div class="modal-close" data-close="letterModal"></div>
+            </div>
+            <div class="modal-content">
+                <div class="letter-content">
+                    <!-- ============================================ -->
+                    <!-- PASTE YOUR LETTER TEXT HERE -->
+                    <!-- ============================================ -->
+                    <p>My dearest love, Ten</p>
+                    
+                    <p>Every moment with you feels like a beautiful dream I never want to wake up from. You've brought so much light, laughter, and love into my life, and I'm endlessly grateful for you.</p>
+                    
+                    <p>This Valentine's Day, I wanted to create something special for you - a little digital love letter to show you just how much you mean to me. Each folder here holds a piece of my heart.</p>
+                    
+                    <p>You make every day brighter, every challenge easier , and every moment sweeter. I love you more than words can express.</p>
+                    
+                    <p> anh thuong em, anh thuong Ten cua anh </p>
+
+                    <p class="signature">Forever yours ♥</p>
+                    <!-- ============================================ -->
+                    <!-- END OF LETTER TEXT -->
+                    <!-- ============================================ -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Playlist Modal -->
+    <div class="modal" id="playlistModal">
+        <div class="modal-window">
+            <div class="modal-header">
+                <div class="modal-title">playlist ♥</div>
+                <div class="modal-close" data-close="playlistModal"></div>
+            </div>
+            <div class="modal-content">
+                <div class="playlist-content">
+                    <p>I made you a playlist of songs that remind me of us ♥</p>
+                    
+                    <!-- ============================================ -->
+                    <!-- PASTE YOUR APPLE MUSIC PLAYLIST LINK HERE -->
+                    <!-- Replace the href with your actual playlist URL -->
+                    <!-- ============================================ -->
+                    <a href="https://music.apple.com/vn/playlist/ten-v%C3%A0-c%C3%BAn/pl.u-oZyl3M1uGErBvEg" 
+                       target="_blank" 
+                       class="playlist-link">
+                        🎵 Listen on Apple Music
+                    </a>
+                    <!-- ============================================ -->
+                    <!-- END OF PLAYLIST LINK -->
+                    <!-- ============================================ -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Photo Modal -->
+    <div class="modal" id="photoModal">
+        <div class="modal-window">
+            <div class="modal-header">
+                <div class="modal-title">photo ♥</div>
+                <div class="modal-close" data-close="photoModal"></div>
+            </div>
+            <div class="modal-content">
+                <div class="photo-content">
+                    <div class="photo-frame">
+                        <!-- ============================================ -->
+                        <!-- PASTE YOUR IMAGE FILE / IMAGE URL HERE -->
+                        <!-- Replace src with your image URL or file path -->
+                        <!-- ============================================ -->
+                        <img src="c:\Users\Chaleu Truong\Downloads\804f6ad3-f0af-48f9-bdf2-5aac2afe54e2.jpg" 
+                             
+                            <p> Our first met </p>
+                        <!-- ============================================ -->
+                        <!-- END OF PHOTO -->
+                        <!-- ============================================ -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Desktop interaction
+        const monitor = document.getElementById('monitor');
+        const clickHint = document.getElementById('clickHint');
+        const foldersContainer = document.getElementById('foldersContainer');
+
+        monitor.addEventListener('click', function() {
+            if (!monitor.classList.contains('clicked')) {
+                monitor.classList.add('clicked');
+                clickHint.style.display = 'none';
+                foldersContainer.classList.add('active');
+            }
+        });
+
+        // Folder interactions - Open modals
+        const folders = document.querySelectorAll('.folder');
+        folders.forEach(folder => {
+            folder.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const modalId = this.getAttribute('data-modal');
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.classList.add('active');
+                }
+            });
+        });
+
+        // Close modals
+        const closeButtons = document.querySelectorAll('.modal-close');
+        closeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const modalId = this.getAttribute('data-close');
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.classList.remove('active');
+                }
+            });
+        });
+
+        // Close modal when clicking outside
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                }
+            });
+        });
+
+        // Prevent modal window clicks from closing the modal
+        const modalWindows = document.querySelectorAll('.modal-window');
+        modalWindows.forEach(window => {
+            window.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        });
+    </script>
+</body>
+</html>
